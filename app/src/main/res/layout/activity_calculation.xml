@@ -96,7 +96,6 @@
                     style="@style/ContentTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/example_place"
                     app:layout_constraintBottom_toBottomOf="@id/place"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="3"

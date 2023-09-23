@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.police.demonstrationservice.manager.DateManager;
@@ -56,16 +57,20 @@ public class MainActivity extends AppCompatActivity {
                                 Manifest.permission.ACCESS_FINE_LOCATION, false);
                         Boolean coarseLocationGranted = result.getOrDefault(
                                 Manifest.permission.ACCESS_COARSE_LOCATION, false);
+
                         if (fineLocationGranted != null && fineLocationGranted) {
+                            Log.e("테스트", "권한 요청1");
                             // Precise location access granted.
                             KeyStoreManager.getInstance().getPublicKey(getApplicationContext(), (key) -> {
                                 // 하루마다 날짜 업데이트, 날짜 변경 시 일출 일몰 시간 업데이트
+                                Log.e("테스트키", key);
                                 DateManager.getInstance().updateDate(MainActivity.this, key);
                             });
                         } else if (coarseLocationGranted != null && coarseLocationGranted) {
                             // Only approximate location access granted.
                             KeyStoreManager.getInstance().getPublicKey(getApplicationContext(), (key) -> {
                                 // 하루마다 날짜 업데이트, 날짜 변경 시 일출 일몰 시간 업데이트
+                                Log.e("테스트키", key);
                                 DateManager.getInstance().updateDate(MainActivity.this, key);
                             });
                         } else {

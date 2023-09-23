@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -49,15 +50,12 @@ public class CalculationActivity extends AppCompatActivity {
     }
 
     private void initEditText() {
-        binding.measurementEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE) {
-                    binding.calculateButton.callOnClick();
-                    return false;
-                }
-                return true;
+        binding.measurementEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.calculateButton.callOnClick();
+                return false;
             }
+            return true;
         });
     }
 
@@ -97,25 +95,34 @@ public class CalculationActivity extends AppCompatActivity {
     private void initTextView() {
         // 일몰 시각 반영
         String sunsetTime = DateManager.getInstance().getSunsetTime(this);
-        String text = String.valueOf(sunsetTime.charAt(0)) + sunsetTime.charAt(1) + getString(R.string.hour) + getString(R.string.space) + sunsetTime.charAt(2) + sunsetTime.charAt(3) + getString(R.string.minute);
-        binding.sunsetTimeDetail.setText(text);
+
+        if (sunsetTime.length() >= 4) {
+            String text = String.valueOf(sunsetTime.charAt(0)) + sunsetTime.charAt(1) + getString(R.string.hour) + getString(R.string.space) + sunsetTime.charAt(2) + sunsetTime.charAt(3) + getString(R.string.minute);
+            binding.sunsetTimeDetail.setText(text);
+        }
 
         // 현재 날짜 반영
         String[] currentDate = DateManager.getInstance().getCurrentDate(YEAR_MONTH_DAY_DATE_FORMAT).split(getString(R.string.dash));
-        String t = currentDate[0] + getString(R.string.year) + getString(R.string.space) + currentDate[1] + getString(R.string.month) + getString(R.string.space) + currentDate[2] + getString(R.string.day);
-        binding.dateDetail.setText(t);
+        if (currentDate.length >= 3) {
+            String t = currentDate[0] + getString(R.string.year) + getString(R.string.space) + currentDate[1] + getString(R.string.month) + getString(R.string.space) + currentDate[2] + getString(R.string.day);
+            binding.dateDetail.setText(t);
+        }
 
         // 낮 / 밤 이미지 반영
         String sunriseTime = DateManager.getInstance().getSunriseTime(this);
         int current = Integer.parseInt(DateManager.getInstance().getCurrentDate(HOUR_MINUTE).replaceAll(getString(R.string.dash), ""));
-        int sunset = Integer.parseInt(sunsetTime.trim());
-        int sunrise = Integer.parseInt(sunriseTime.trim());
 
-        if (current > sunset || current < sunrise) {
-            binding.dayNightImage.setImageResource(R.drawable.moon);
+        if (sunsetTime.length() >= 4 && sunriseTime.length() >= 4) {
+            int sunset = Integer.parseInt(sunsetTime.trim());
+            int sunrise = Integer.parseInt(sunriseTime.trim());
+
+            if (current > sunset || current < sunrise) {
+                binding.dayNightImage.setImageResource(R.drawable.moon);
+            }
+
+            String location = DateManager.getInstance().getLocation(this);
+            Log.e("테스트", location);
+            binding.placeDetail.setText(location);
         }
-
-        String location = DateManager.getInstance().getLocation(this);
-        binding.placeDetail.setText(location);
     }
 }

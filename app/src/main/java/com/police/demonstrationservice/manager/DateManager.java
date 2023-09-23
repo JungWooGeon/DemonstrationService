@@ -66,11 +66,13 @@ public class DateManager {
 
     public void updateDate(Context context, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_RECORD_DATE_KEY, MODE_PRIVATE);
+
         String recordDate = sharedPreferences.getString(SHARED_PREFERENCES_DATE_KEY, "");
         String currentDate = DateManager.getInstance().getCurrentDate(YEAR_MONTH_DAY_DATE_FORMAT).replaceAll("-", "");
 
-        // 하루마다 업데이트
-        if (recordDate.equals("") || currentDate.equals("") || Integer.parseInt(recordDate) < Integer.parseInt(currentDate)) {
+        // 하루마다 업데이트 (이전에 입력된 값이 없을 경우에도 업데이트)
+        if (getLocation(context).equals("") || getSunsetTime(context).equals("") || getSunriseTime(context).equals("")
+                || (recordDate.equals("") || currentDate.equals("") || Integer.parseInt(recordDate) < Integer.parseInt(currentDate))) {
             TikXml parser = new TikXml.Builder().exceptionOnUnreadXml(false).build();
 
             // Retrofit
@@ -95,6 +97,8 @@ public class DateManager {
                                 String sunrise = response.body().getBody().getItems().getItem().getSunrise();
                                 String sunset = response.body().getBody().getItems().getItem().getSunset();
                                 String location = response.body().getBody().getItems().getItem().getLocation();
+
+                                Log.e("위치", location);
 
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString(SHARED_PREFERENCES_DATE_KEY, currentDate);
