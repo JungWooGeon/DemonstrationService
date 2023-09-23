@@ -9,17 +9,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.police.demonstrationservice.manager.DateManager;
 import com.police.demonstrationservice.R;
 import com.police.demonstrationservice.databinding.ActivityCalculationBinding;
+import com.police.demonstrationservice.manager.DateManager;
 
 import java.util.Objects;
 
