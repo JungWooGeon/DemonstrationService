@@ -2,7 +2,7 @@
 
 <br>
 
-![app_icon](https://github.com/JungWooGeon/DemonstrationService/assets/61993128/22d3f658-2081-450c-b93c-2c6a1515cee9)
+![app_icon](https://github.com/JungWooGeon/DemonstrationService/assets/61993128/3c843212-d95f-481c-a1b4-11b08247054b)
 
 <br><br>
 
